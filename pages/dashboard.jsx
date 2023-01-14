@@ -7,16 +7,14 @@ export default function Dashboard () {
   const route = useRouter(); 
   const [user, loading] = useAuthState(auth);
 
-  // check if user is logged in
-  const getData = async () => {
-    if (loading) return;
-    if(!user) return route.push('/auth/login');
-  };
+  // const getData = async () => {
+  //   if (loading) return;
+  //   if(!user) return route.push('/auth/login');
+  // };
 
   const handleSignOut = () => {
     auth.signOut();
-    route.push('/auth/login')
-    // getData()
+    route.push('/auth/login');
   };
 
   return (
