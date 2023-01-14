@@ -25,7 +25,7 @@ export default function Login () {
     if (user) {
       route.push('/')
     } else {
-      alert('user is already logged in.')
+     console.log('user is logged in')
     }
   }, [user, route]);
 
