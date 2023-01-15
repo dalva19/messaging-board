@@ -2,7 +2,7 @@ import {auth, db} from '../utils/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
 import { useState, useRef, useEffect } from 'react';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import {toast} from 'react-toastify';
 
 export default function Post () {
@@ -31,7 +31,16 @@ export default function Post () {
       });
       return
     }
-    // make a new post
+
+    // check if editing
+    if (post?.hasOwnProperty("id")) {
+      const docRef = doc(db, "posts", post.id);
+      const updatedPost = {...post, 'timestamp': serverTimestamp()};
+      await updateDoc(docRef, updatedPost);
+      toast.success('Post has been made!', {position: toast.POSITION.TOP_CENTER, autoClose: 1500});
+      return route.push("/")
+    } {
+       // make a new post
     // const userRef = collection(db, 'user', userDoc.id, 'posts');
     const collectionRef = collection(db, 'posts');
     
@@ -43,13 +52,15 @@ export default function Post () {
         avatar: user.photoURL,
         username: user.displayName
       });
-      setPost({description: ''})
-      return route.push('/')
+      setPost({description: ''});
+      toast.success('Post has been made!', {position: toast.POSITION.TOP_CENTER, autoClose: 1500});
+      return route.push('/');
     } catch(err) {
       toast.error(`${err}`, {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 1500
       });
+    }
     }
   };
 
@@ -69,7 +80,9 @@ export default function Post () {
   return (
     <div className='my-20 p-10 shadow-lg rounded-lg max-w-xl mx-auto'>
       <form action="" onSubmit={handleFormSubmit}>
-        <h1 className='text-2xl font-bold'>Create a new post</h1>
+        <h1 className='text-2xl font-bold'>
+          {post?.hasOwnProperty("id") ? 'Update your post' : 'Create a new post'}
+        </h1>
 
         <div className='py-2'>
           <h3 className='text-lg font-medium py-2'>Description</h3>
