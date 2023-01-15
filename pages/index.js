@@ -1,9 +1,33 @@
 import Head from "next/head";
-import { Inter } from "@next/font/google";
-
-// const inter = Inter({ subsets: ["latin"] });
+import Message from "@/components/message";
+import { useEffect, useState } from "react";
+import { db } from "@/utils/firebase";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 
 export default function Home() {
+  // create a state with all the posts from db
+  const [allPosts, setAllPosts] = useState([]);
+
+  const getPosts = async () => {
+    const collectionRef = collection(db, "posts");
+    const q = query(collectionRef, orderBy("timestamp", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setAllPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+
+    return unsubscribe;
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
   return (
     <>
       <Head>
@@ -12,7 +36,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main></main>
+      <div className="my-12 text-lg font-medium">
+        <h2>See what other people are saying...</h2>
+      </div>
+      {allPosts.map((post) => (
+        <Message {...post} key={post.id} />
+      ))}
     </>
   );
 }
