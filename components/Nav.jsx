@@ -6,7 +6,6 @@ import Image from "next/image";
 
 export default function Nav () {
   const [user, loading] = useAuthState(auth);
-  console.log(user)
 
   return (
    <nav className="flex justify-between items-center py-10">
