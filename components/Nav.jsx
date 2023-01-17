@@ -20,9 +20,10 @@ export default function Nav () {
              <button className="font-medium bg-cyan-500 text-white rounded text-sm">Post</button>
             </Link>
             <Link href={"/dashboard"}>
-              {/* <Image className="w-12 rounded-full cursor-pointer" src={user.photoURL} alt="" width={} /> */}
               {user.photoURL ? (
-                 <img className="w-12 rounded-full cursor-pointer" src={user.photoURL} alt="" />
+                 <img className="w-12 rounded-full cursor-pointer" src={user.photoURL} />
+
+                //  <Image src={user.photoURL} width={40} height={40} alt={'hello'}/>
               ): (
                 <FaUserAlt />
               )}
@@ -30,9 +31,11 @@ export default function Nav () {
             </Link>
             </div>
       ): (
+        
         <Link href={"/auth/login"} className="py-2 px-4 text-sm bg-cyan-500 text-white rounded-lg font-medium ml-8">
         Join Now
        </Link>
+      
       )}
       
     </ul>

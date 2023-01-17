@@ -19,7 +19,7 @@ export default function Login () {
     } catch(err) {
 
     }
-  }
+  };
 
   useEffect(() => {
     if (user) {

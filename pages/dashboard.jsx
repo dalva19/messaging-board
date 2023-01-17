@@ -15,6 +15,8 @@ export default function Dashboard () {
   const [user, loading] = useAuthState(auth);
   const [posts, setPosts] = useState([]);
 
+  console.log('USER', user)
+
   const getData = async () => {
     const q =  query(collection(db, "posts"), where("user", "==", user.uid));
     const unsubscribe = onSnapshot(q, (snapshot) => {

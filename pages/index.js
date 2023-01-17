@@ -9,6 +9,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
+import Link from "next/link";
 
 export default function Home() {
   // create a state with all the posts from db
@@ -40,7 +41,17 @@ export default function Home() {
         <h2>See what other people are saying...</h2>
       </div>
       {allPosts.map((post) => (
-        <Message {...post} key={post.id} />
+        <Message {...post} key={post.id}>
+          <Link href={{ pathname: `/${post.id}`, query: { ...post } }}>
+            <button
+              className={
+                post.comments?.length > 0 ? "text-cyan-500" : "text-black"
+              }
+            >
+              {post.comments?.length > 0 ? post.comments?.length : 0} comments
+            </button>
+          </Link>
+        </Message>
       ))}
     </>
   );
